@@ -9,7 +9,7 @@ const LandlordModel = mongoose.Schema({
     unique: true,
   },
   password: {
-    String,
+    type: String,
   },
   properties: [{ type: mongoose.Schema.Types.ObjectId, ref: "Property" }],
   role: {

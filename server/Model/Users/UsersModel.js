@@ -14,7 +14,7 @@ const UsersModel = mongoose.Schema({
     unique: true,
     required: true,
   },
-  idProof: {
+  aadharCardNo: {
     type: String,
   },
   permanentAddress: {

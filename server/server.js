@@ -16,6 +16,7 @@ const port = process.env.PORT || 5000;
 app.use("/auth", require("./Routes/AuthRoutes"));
 app.use("/admin", require("./Routes/AdminRoutes"));
 app.use("/landlord", require("./Routes/LandlordRoutes"));
+app.use("/user", require("./Routes/UsersRoutes"));
 // app.use("/*", (req, res) => {
 //   res.status(404).json({ message: "No resource found" });
 // }); IDK why but it's causing error

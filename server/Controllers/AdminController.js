@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const Admin = require("../Model/Admin/AdminsModel");
 
 exports.addAdmin = asyncHandler(async (req, res) => {
@@ -21,7 +21,7 @@ exports.addAdmin = asyncHandler(async (req, res) => {
   }
 
   // Hash the password
-  const salt = await bcrypt.genSalt(10);
+  // const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   // Create new admin

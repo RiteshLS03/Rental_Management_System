@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const Landlord = require("../Model/Landlord/LandlordModel"); // Adjust path if needed
 
 exports.addLandlord = asyncHandler(async (req, res) => {
@@ -23,7 +23,7 @@ exports.addLandlord = asyncHandler(async (req, res) => {
   // 3. Hash password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-
+  console.log(hashedPassword);
   // 4. Create landlord
   const newLandlord = await Landlord.create({
     name,
