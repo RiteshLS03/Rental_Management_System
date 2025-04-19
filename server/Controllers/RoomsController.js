@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Rooms = require("../Model/Room/RoomsModel"); // Adjust path as needed
+// const = require("")
 const Properties = require("../Model/Property/PropertyModel"); // Adjust path as needed
+const RoomsModel = require("../Model/Room/RoomsModel");
 
 exports.addRoom = asyncHandler(async (req, res) => {
   const { roomNumber, rentAmount, property } = req.body;
@@ -51,6 +53,25 @@ exports.addRoom = asyncHandler(async (req, res) => {
   }
 });
 
+exports.removeRooms = asyncHandler(async (req, res) => {
+  const { roomNumber } = req.body;
+
+  if (!roomNumber) {
+    return res.status(400).json({ message: "Room number is required." });
+  }
+
+  const removedRoom = await Rooms.findOneAndDelete({ roomNumber });
+  // const removedRoom = await RoomsModel
+  if (!removedRoom) {
+    return res.status(404).json({ message: "Room not found." });
+  }
+
+  res.status(200).json({
+    message: `Room ${roomNumber} has been successfully removed.`,
+    room: removedRoom,
+  });
+});
+
 // Get all rooms
 exports.getAllRooms = asyncHandler(async (req, res) => {
   try {
@@ -60,7 +81,7 @@ exports.getAllRooms = asyncHandler(async (req, res) => {
 
     res.status(200).json({
       count: rooms.length,
-      rooms,
+      rooms: rooms,
     });
   } catch (error) {
     res.status(500).json({
@@ -71,15 +92,16 @@ exports.getAllRooms = asyncHandler(async (req, res) => {
 });
 
 // Get room by ID
-// exports.getRoomById = asyncHandler(async (req, res) => {
-//   try {
-//     const room = await Rooms.findById(req.params.id)
-//       .populate("property", "name address")
-//       .populate("tenacts", "name mobile email");
+exports.getRoomById = asyncHandler(async (req, res) => {
+  try {
+    const room = await Rooms.findById(req.params.id);
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
 
-//     if (!room) {
-//       return res.status(404).json({ message: "Room not found" });
-//     }
-
-//     res.status(200).json(room);
-//   } catch (err
+    res.status(200).json(room);
+  } catch (err) {
+    console.error("Error fetching room by ID:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
